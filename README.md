@@ -12,9 +12,12 @@ Instala primero Git, Codex, Claude Code y Antigravity según sus canales oficial
 git clone https://github.com/calinrus-dev/agent-workstation.git ~/src/agent-workstation
 cd ~/src/agent-workstation
 bash install-linux.sh
+bash clone-projects-linux.sh
 ```
 
-El instalador guarda copias previas en `~/.local/share/agent-workstation-backups/`, coloca las instrucciones en los tres clientes, instala las skills compartidas, ajusta el modelo preferido de Codex y añade Context7 donde puede hacerlo sin credenciales. Si faltan herramientas, muestra lo pendiente. Reinicia los clientes después. No instala binarios ni inicia sesión por ti.
+El primer script configura los agentes. El segundo clona **todos los repositorios no archivados** de tu cuenta en `~/Projects/GitHub` y abre `sync/cachyos-2026-09-30` donde exista. Requiere `gh auth login` y Git LFS. No toca directorios existentes. Puedes cambiar el destino con `PROJECTS_ROOT=/ruta` o limitar la cuenta con `GH_OWNER=usuario`.
+
+El instalador de agentes guarda copias previas en `~/.local/share/agent-workstation-backups/`, coloca las instrucciones en los tres clientes, instala las skills compartidas, ajusta el modelo preferido de Codex y añade Context7 donde puede hacerlo sin credenciales. Si faltan herramientas, muestra lo pendiente. Reinicia los clientes después. No instala binarios ni inicia sesión por ti.
 
 Para actualizar en cualquiera de los sistemas: `git pull` en este repositorio y vuelve a ejecutar el instalador correspondiente. Edita los archivos **aquí**, haz commit y push, y aplica el mismo cambio en el otro sistema.
 
@@ -39,6 +42,7 @@ El instalador Windows sincroniza las instrucciones y skills compartidas. Deja in
 - Mantén el `AGENTS.md` de cada repositorio con sus reglas específicas. Este paquete solo establece instrucciones globales.
 
 Consulta [cómo está dividido el sistema](docs/arquitectura.md) antes de añadir otro MCP, hook o skill global.
+Para trabajar de un sistema al otro, sigue [la rutina de proyectos](docs/proyectos.md).
 
 ## Comprobación rápida en CachyOS
 

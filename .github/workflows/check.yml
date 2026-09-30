@@ -15,7 +15,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Syntax
-        run: bash -n install-linux.sh
+        run: bash -n install-linux.sh clone-projects-linux.sh
       - name: Isolated install and repeat
         shell: bash
         run: |
