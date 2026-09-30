@@ -9,6 +9,8 @@
 - Para dudas sobre APIs, configuración o ejemplos de una versión concreta, usa Context7 si está disponible: identifica primero la versión del proyecto y haz una consulta acotada. Reutiliza resultados. No envíes código privado ni secretos. Si no está disponible, consulta documentación oficial.
 - Si RTK está instalado, usa salidas compactas compatibles, por ejemplo `rtk git status` o `rtk git log -5`. Conserva el código de salida y recupera el detalle con `rtk proxy` cuando el resumen sea insuficiente. `rtk gain` muestra estimaciones, no el saldo de una suscripción.
 - Para GitHub usa `gh` cuando esté autenticado. Antes de un commit, revisa el diff preparado y pasa Gitleaks sobre los archivos staged si está instalado. No añadas escaneos a cada edición por rutina.
+- Para validar una interfaz, usa el navegador disponible. Para documentos, PDF, hojas o presentaciones, carga solo la skill del formato necesario.
+- Si se solicita una revisión de seguridad, acótala al diff o componente pertinente. No lances escaneos completos, profundos o periódicos por rutina.
 - Ejecuta las verificaciones necesarias y los controles obligatorios del proyecto. No declares éxito sin evidencia ni repitas controles sin una duda concreta.
 - No actives agentes paralelos, revisiones con IA, MCP adicionales ni bucles recurrentes solo por rutina.
 - En PowerShell automatizado usa `-NoProfile` salvo que necesites el perfil.
