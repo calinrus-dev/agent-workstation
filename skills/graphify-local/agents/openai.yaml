@@ -1,0 +1,3 @@
+interface:
+  display_name: "Graphify local"
+  short_description: "Navegación local por grafos con contexto acotado"

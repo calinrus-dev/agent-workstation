@@ -1,0 +1,13 @@
+# Estado local, sesiones y credenciales nunca se sincronizan.
+.env
+.env.*
+*.local.json
+*.local.toml
+auth.json
+*token*
+*secret*
+*.sqlite*
+*.db
+*.log
+backups/
+*.bak

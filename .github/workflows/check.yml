@@ -1,0 +1,59 @@
+name: Verify installers
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Syntax
+        run: bash -n install-linux.sh
+      - name: Isolated install and repeat
+        shell: bash
+        run: |
+          export HOME="$(mktemp -d)"
+          export AGENT_WORKSTATION_SKIP_INTEGRATIONS=1
+          mkdir -p "$HOME/.codex"
+          printf 'model = "previous"\n[mcp_servers.other]\nurl = "https://example.org/mcp"\n' > "$HOME/.codex/config.toml"
+          bash install-linux.sh
+          bash install-linux.sh
+          python3 - <<'PY'
+          import json, os, pathlib, tomllib
+          home = pathlib.Path(os.environ['HOME'])
+          cfg = tomllib.loads((home / '.codex/config.toml').read_text())
+          assert cfg['model'] == 'gpt-6.1-sol'
+          assert cfg['model_reasoning_effort'] == 'high'
+          assert 'context7' in cfg['mcp_servers']
+          assert 'other' in cfg['mcp_servers']
+          mcp = json.loads((home / '.gemini/config/mcp_config.json').read_text())
+          assert 'context7' in mcp['mcpServers']
+          for path in ('.codex/AGENTS.md', '.claude/CLAUDE.md', '.gemini/GEMINI.md'):
+              assert (home / path).is_file()
+          PY
+
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
+      - name: Parse and run in isolated home
+        shell: pwsh
+        run: |
+          $tokens = $null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile((Resolve-Path ./install-windows.ps1), [ref]$tokens, [ref]$errors) | Out-Null
+          if ($errors.Count) { throw ($errors | Out-String) }
+          $env:AGENT_WORKSTATION_HOME = Join-Path $env:RUNNER_TEMP 'agent-workstation-home'
+          ./install-windows.ps1
+          ./install-windows.ps1
+          if (-not (Test-Path (Join-Path $env:AGENT_WORKSTATION_HOME '.codex/AGENTS.md'))) { throw 'Missing Codex guidance' }
+          if (-not (Test-Path (Join-Path $env:AGENT_WORKSTATION_HOME '.claude/skills/graphify-local/SKILL.md'))) { throw 'Missing Claude skill' }
