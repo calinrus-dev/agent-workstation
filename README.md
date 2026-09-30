@@ -6,7 +6,7 @@ La idea es sencilla: este repositorio guarda las reglas y las preferencias compa
 
 ## En CachyOS
 
-Instala primero Git, Codex, Claude Code y Antigravity según sus canales oficiales. Para RTK instala el binario de [Rust Token Killer](https://github.com/TokenFleet-AI/rtk) desde su proyecto oficial; comprueba que `rtk gain` funciona. Graphify, Gitleaks y `gh` son herramientas opcionales que las instrucciones usan cuando están disponibles.
+Instala primero Git, Codex, Claude Code y Antigravity según sus canales oficiales. Para RTK instala el binario de [Rust Token Killer](https://github.com/rtk-ai/rtk) desde su proyecto oficial; comprueba que `rtk gain` funciona. Graphify, Gitleaks y `gh` son herramientas opcionales que las instrucciones usan cuando están disponibles.
 
 ```bash
 git clone https://github.com/calinrus-dev/agent-workstation.git ~/src/agent-workstation

@@ -23,4 +23,4 @@ No se sincronizan archivos de autenticación, permisos, historiales, cachés, ba
 - [Modelo GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) y [MCP de documentación OpenAI](https://developers.openai.com/learn/docs-mcp)
 - [MCP de Claude Code](https://code.claude.com/docs/en/mcp)
 - [Reglas](https://antigravity.google/docs/rules/), [skills](https://antigravity.google/docs/skills) y [MCP](https://antigravity.google/docs/mcp) de Antigravity
-- [Rust Token Killer](https://github.com/TokenFleet-AI/rtk)
+- [Rust Token Killer](https://github.com/rtk-ai/rtk)
