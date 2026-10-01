@@ -14,3 +14,7 @@
 - Ejecuta las verificaciones necesarias y los controles obligatorios del proyecto. No declares éxito sin evidencia ni repitas controles sin una duda concreta.
 - No actives agentes paralelos, revisiones con IA, MCP adicionales ni bucles recurrentes solo por rutina.
 - En PowerShell automatizado usa `-NoProfile` salvo que necesites el perfil.
+
+## Contexto social
+
+Para tareas de LinkedIn, GitHub, portfolio, publicaciones o networking de Calin, lee `SOCIAL.md`, instalado junto a este archivo global. Es contexto compartido, no autorización permanente para acciones externas. Las instrucciones actuales del usuario y del repositorio siguen teniendo prioridad.

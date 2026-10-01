@@ -19,15 +19,15 @@ jobs:
       - name: Isolated install and repeat
         shell: bash
         run: |
-          export HOME="$(mktemp -d)"
+          export AGENT_WORKSTATION_HOME="$(mktemp -d)"
           export AGENT_WORKSTATION_SKIP_INTEGRATIONS=1
-          mkdir -p "$HOME/.codex"
-          printf 'model = "previous"\n[mcp_servers.other]\nurl = "https://example.org/mcp"\n' > "$HOME/.codex/config.toml"
+          mkdir -p "$AGENT_WORKSTATION_HOME/.codex"
+          printf 'model = "previous"\n[mcp_servers.other]\nurl = "https://example.org/mcp"\n' > "$AGENT_WORKSTATION_HOME/.codex/config.toml"
           bash install-linux.sh
           bash install-linux.sh
           python3 - <<'PY'
           import json, os, pathlib, tomllib
-          home = pathlib.Path(os.environ['HOME'])
+          home = pathlib.Path(os.environ['AGENT_WORKSTATION_HOME'])
           cfg = tomllib.loads((home / '.codex/config.toml').read_text())
           assert cfg['model'] == 'gpt-6.1-sol'
           assert cfg['model_reasoning_effort'] == 'high'
@@ -37,6 +37,9 @@ jobs:
           assert 'context7' in mcp['mcpServers']
           for path in ('.codex/AGENTS.md', '.claude/CLAUDE.md', '.gemini/GEMINI.md'):
               assert (home / path).is_file()
+              assert 'SOCIAL.md' in (home / path).read_text()
+              installed_social = (home / path).parent / 'SOCIAL.md'
+              assert installed_social.read_bytes() == pathlib.Path('SOCIAL.md').read_bytes()
           PY
 
   windows:
@@ -57,3 +60,8 @@ jobs:
           ./install-windows.ps1
           if (-not (Test-Path (Join-Path $env:AGENT_WORKSTATION_HOME '.codex/AGENTS.md'))) { throw 'Missing Codex guidance' }
           if (-not (Test-Path (Join-Path $env:AGENT_WORKSTATION_HOME '.claude/skills/graphify-local/SKILL.md'))) { throw 'Missing Claude skill' }
+          foreach ($client in @('.codex', '.claude', '.gemini')) {
+            $installedSocial = Join-Path $env:AGENT_WORKSTATION_HOME "$client/SOCIAL.md"
+            if (-not (Test-Path $installedSocial)) { throw "Missing social context: $client" }
+            if ((Get-FileHash $installedSocial).Hash -ne (Get-FileHash ./SOCIAL.md).Hash) { throw "Social context differs: $client" }
+          }

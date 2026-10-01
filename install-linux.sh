@@ -4,36 +4,41 @@ set -euo pipefail
 repo_dir="$(cd -- "$(dirname -- "${BASH_SOURCE[0]}")" && pwd)"
 # shellcheck source=defaults.env
 source "$repo_dir/defaults.env"
-backup_dir="$HOME/.local/share/agent-workstation-backups/$(date +%Y%m%d-%H%M%S)-$$"
+client_home="${AGENT_WORKSTATION_HOME:-$HOME}"
+backup_dir="$client_home/.local/share/agent-workstation-backups/$(date +%Y%m%d-%H%M%S)-$$"
 mkdir -p "$backup_dir"
 
 install_guidance() {
   local target="$1"
+  local source_file="${2:-guidance.md}"
   mkdir -p "$(dirname "$target")"
   if [[ -e "$target" ]]; then
-    local rel="${target#"$HOME"/}"
+    local rel="${target#"$client_home"/}"
     mkdir -p "$backup_dir/$(dirname "$rel")"
     cp -p "$target" "$backup_dir/$rel"
   fi
-  install -m 644 "$repo_dir/guidance.md" "$target"
+  install -m 644 "$repo_dir/$source_file" "$target"
 }
 
-install_guidance "$HOME/.codex/AGENTS.md"
-install_guidance "$HOME/.claude/CLAUDE.md"
-install_guidance "$HOME/.gemini/GEMINI.md"
+install_guidance "$client_home/.codex/AGENTS.md"
+install_guidance "$client_home/.claude/CLAUDE.md"
+install_guidance "$client_home/.gemini/GEMINI.md"
+for client_dir in "$client_home/.codex" "$client_home/.claude" "$client_home/.gemini"; do
+  install_guidance "$client_dir/SOCIAL.md" SOCIAL.md
+done
 
 for skill in graphify-local local-dev-tools; do
-  mkdir -p "$HOME/.agents/skills/$skill"
-  cp -a "$repo_dir/skills/$skill/." "$HOME/.agents/skills/$skill/"
-  for dir in "$HOME/.codex/skills" "$HOME/.claude/skills" "$HOME/.gemini/config/skills"; do
+  mkdir -p "$client_home/.agents/skills/$skill"
+  cp -a "$repo_dir/skills/$skill/." "$client_home/.agents/skills/$skill/"
+  for dir in "$client_home/.codex/skills" "$client_home/.claude/skills" "$client_home/.gemini/config/skills"; do
     mkdir -p "$dir"
     if [[ ! -e "$dir/$skill" && ! -L "$dir/$skill" ]]; then
-      ln -s "$HOME/.agents/skills/$skill" "$dir/$skill"
+      ln -s "$client_home/.agents/skills/$skill" "$dir/$skill"
     fi
   done
 done
 
-config="$HOME/.codex/config.toml"
+config="$client_home/.codex/config.toml"
 mkdir -p "$(dirname "$config")"
 if [[ -e "$config" ]]; then cp -p "$config" "$backup_dir/codex-config.toml"; else : > "$config"; fi
 
@@ -65,7 +70,7 @@ enabled_tools = ["resolve-library-id", "query-docs"]
 TOML
 fi
 
-ag_mcp="$HOME/.gemini/config/mcp_config.json"
+ag_mcp="$client_home/.gemini/config/mcp_config.json"
 mkdir -p "$(dirname "$ag_mcp")"
 if [[ -e "$ag_mcp" ]]; then cp -p "$ag_mcp" "$backup_dir/antigravity-mcp_config.json"; fi
 if command -v python3 >/dev/null 2>&1; then

@@ -6,9 +6,12 @@ $backup = Join-Path $backupBase (Get-Date -Format 'yyyyMMdd-HHmmss-fff')
 New-Item -ItemType Directory -Force -Path $backup | Out-Null
 
 $targets = @(
-  @{ Path = (Join-Path $homeDir '.codex\AGENTS.md'); Name = 'AGENTS.md' },
-  @{ Path = (Join-Path $homeDir '.claude\CLAUDE.md'); Name = 'CLAUDE.md' },
-  @{ Path = (Join-Path $homeDir '.gemini\GEMINI.md'); Name = 'GEMINI.md' }
+  @{ Path = (Join-Path $homeDir '.codex\AGENTS.md'); Name = 'AGENTS.md'; Source = 'guidance.md' },
+  @{ Path = (Join-Path $homeDir '.claude\CLAUDE.md'); Name = 'CLAUDE.md'; Source = 'guidance.md' },
+  @{ Path = (Join-Path $homeDir '.gemini\GEMINI.md'); Name = 'GEMINI.md'; Source = 'guidance.md' },
+  @{ Path = (Join-Path $homeDir '.codex\SOCIAL.md'); Name = 'codex-SOCIAL.md'; Source = 'SOCIAL.md' },
+  @{ Path = (Join-Path $homeDir '.claude\SOCIAL.md'); Name = 'claude-SOCIAL.md'; Source = 'SOCIAL.md' },
+  @{ Path = (Join-Path $homeDir '.gemini\SOCIAL.md'); Name = 'gemini-SOCIAL.md'; Source = 'SOCIAL.md' }
 )
 foreach ($entry in $targets) {
   $parent = Split-Path -Parent $entry.Path
@@ -16,7 +19,7 @@ foreach ($entry in $targets) {
   if (Test-Path -LiteralPath $entry.Path) {
     Copy-Item -LiteralPath $entry.Path -Destination (Join-Path $backup $entry.Name)
   }
-  Copy-Item -LiteralPath (Join-Path $repo 'guidance.md') -Destination $entry.Path -Force
+  Copy-Item -LiteralPath (Join-Path $repo $entry.Source) -Destination $entry.Path -Force
 }
 
 foreach ($name in @('graphify-local', 'local-dev-tools')) {

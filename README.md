@@ -44,6 +44,10 @@ El instalador Windows sincroniza las instrucciones y skills compartidas. Deja in
 Consulta [cómo está dividido el sistema](docs/arquitectura.md) antes de añadir otro MCP, hook o skill global.
 Para trabajar de un sistema al otro, sigue [la rutina de proyectos](docs/proyectos.md).
 
+## Contexto social compartido
+
+[SOCIAL.md](SOCIAL.md) reúne las cuentas públicas, el tono, los proyectos, la separación entre showcases e implementación privada y el criterio para LinkedIn. Los instaladores lo copian junto a `AGENTS.md`, `CLAUDE.md` y `GEMINI.md`; las instrucciones globales piden leerlo cuando la tarea trata de perfil, publicaciones o networking. Edita la fuente aquí y sincronízala con el instalador de cada equipo. El archivo no concede autorización permanente para publicar o enviar mensajes.
+
 ## Comprobación rápida en CachyOS
 
 ```bash
